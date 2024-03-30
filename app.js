@@ -12,6 +12,9 @@ async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
         const snippetPath = await searchForSnippet(repoDir, searchTerm);
         if (snippetPath) {
             const codeSnippet = fs.readFileSync(snippetPath, 'utf8');
+            // Print the code snippet to the user
+            console.log('Code snippet to be executed:', codeSnippet);
+            // Execute the code snippet
             const result = executeCodeSnippet(codeSnippet);
             return result;
         } else {
