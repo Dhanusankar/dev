@@ -68,7 +68,7 @@ const userInput = 'fibonacci'; // User provides the search term to find the snip
 
 searchAndExecuteCodeSnippet(repositoryUrl, branch, userInput)
     .then(result => {
-        console.log('Execution result:', result);
+        console.log('Execution result2:', result);
     })
     .catch(error => {
         console.error('Error:', error);
