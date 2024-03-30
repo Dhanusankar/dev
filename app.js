@@ -62,7 +62,7 @@ async function executeCodeSnippet(codeSnippet) {
         // Check if the evaluated snippet is a function
         if (typeof evaluatedSnippet === 'function') {
             // Call the function with the desired number of terms (e.g., 10)
-            const result = evaluatedSnippet(10);
+            const result = evaluatedSnippet;
             console.log('Execution result:', result);
             return result;
         } else {
