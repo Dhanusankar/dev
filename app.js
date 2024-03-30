@@ -1,20 +1,26 @@
 const simpleGit = require('simple-git');
 const fs = require('fs').promises;
 const path = require('path');
-
 async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
     const repoDir = './temp_repo'; // Temporary directory to clone the repository
     const git = simpleGit();
 
     try {
+        console.log('Cloning repository...');
         await git.clone(repositoryUrl, repoDir, ['--branch', branch]);
+        console.log('Repository cloned successfully.');
+
+        console.log('Searching for code snippet...');
         const snippetPath = await searchForSnippet(repoDir, searchTerm);
         if (snippetPath) {
+            console.log('Code snippet found:', snippetPath);
             const codeSnippet = await fs.readFile(snippetPath, 'utf8');
             console.log('Code snippet to be executed:', codeSnippet);
             const result = await executeCodeSnippet(codeSnippet);
+            console.log('Execution result:', result);
             return result;
         } else {
+            console.log('Code snippet not found in the repository.');
             throw new Error('Code snippet not found in the repository.');
         }
     } catch (error) {
@@ -24,6 +30,7 @@ async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
         // Cleanup: Delete temporary directory after fetching code snippet
         try {
             await fs.rm(repoDir, { recursive: true, force: true });
+            console.log('Temporary directory deleted.');
         } catch (cleanupError) {
             console.error('Error cleaning up:', cleanupError);
         }
@@ -51,8 +58,8 @@ async function searchForSnippet(directory, searchTerm) {
 
 async function executeCodeSnippet(codeSnippet) {
     try {
-        const result1 = eval(codeSnippet);
-        return result1;
+        const result = eval(codeSnippet);
+        return result;
     } catch (error) {
         console.error('Error executing code snippet:', error);
         throw error;
