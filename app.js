@@ -64,11 +64,10 @@ const repositoryUrl = 'https://github.com/Dhanusankar/dev.git';
 const branch = 'main';
 const userInput = 'fibonacci'; // User provides the search term to find the snippet
 
-/*searchAndExecuteCodeSnippet(repositoryUrl, branch, userInput)
+searchAndExecuteCodeSnippet(repositoryUrl, branch, userInput)
     .then(result => {
         console.log('Execution result:', result);
     })
     .catch(error => {
         console.error('Error:', error);
     });
-*/
