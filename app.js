@@ -69,7 +69,7 @@ app.get('/', (req, res) => {
     res.send('Server is running.');
 });
 
-app.use(express.static('public'));
+app.use(express.static('html'));
 
 app.post('/execute', async (req, res) => {
     const searchTerm = req.query.searchTerm;
