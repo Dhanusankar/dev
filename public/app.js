@@ -3,7 +3,6 @@ const simpleGit = require('simple-git');
 const fs = require('fs').promises;
 const path = require('path');
 
-
 const app = express();
 
 async function searchAndExecuteCodeSnippet(searchTerm) {
@@ -66,16 +65,20 @@ async function executeCodeSnippet(codeSnippet) {
 }
 
 // Define a route handler for serving the HTML file
-app.get('/', (req, res) => {
-    // Read the index.html file synchronously
-    const htmlContent = fs.readFileSync('index.html', 'utf8');
-    // Send the HTML content as the response
-    res.send(htmlContent);
+app.get('/', async (req, res) => {
+    try {
+        // Read the index.html file asynchronously
+        const htmlContent = await fs.readFile('index.html', 'utf8');
+        // Send the HTML content as the response
+        res.send(htmlContent);
+    } catch (error) {
+        console.error('Error reading index.html:', error);
+        res.status(500).send('Error reading index.html');
+    }
 });
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.post('/execute', async (req, res) => {
     const searchTerm = req.query.searchTerm;
