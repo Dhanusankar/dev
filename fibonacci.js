@@ -23,4 +23,4 @@ for (let i = 0; i < series.length; i++) {
     }
 }
 // Display result
-print(result);
+console.log(result);
