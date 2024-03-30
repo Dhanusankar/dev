@@ -64,6 +64,14 @@ async function executeCodeSnippet(codeSnippet) {
     }
 }
 
+app.use(express.static('public', { 
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.js')) {
+            res.setHeader('Content-Type', 'text/javascript');
+        }
+    } 
+}));
+
 // Define a route handler for serving the HTML file
 app.get('/', (req, res) => {
     // Read the index.html file synchronously
@@ -72,15 +80,14 @@ app.get('/', (req, res) => {
     res.send(htmlContent);
 });
 
+// Serve JavaScript files with the appropriate MIME type
+app.get('/app.js', (req, res) => {
+    res.type('text/javascript');
+    res.sendFile(path.join(__dirname, 'public', 'app.js'));
+});
 
-
-app.use(express.static('public', { 
-    setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.js')) {
-            res.setHeader('Content-Type', 'text/javascript');
-        }
-    } 
-}));
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/execute', async (req, res) => {
     const searchTerm = req.query.searchTerm;
