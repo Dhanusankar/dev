@@ -52,6 +52,7 @@ async function searchForSnippet(directory, searchTerm) {
 
     return null;
 }
+
 async function executeCodeSnippet(codeSnippet) {
     try {
         console.log('Executing code snippet:', codeSnippet);
@@ -62,7 +63,7 @@ async function executeCodeSnippet(codeSnippet) {
         // Check if the evaluated snippet is a function
         if (typeof evaluatedSnippet === 'function') {
             // Call the function with the desired number of terms (e.g., 10)
-            const result = evaluatedSnippet;
+            const result = evaluatedSnippet(10); // Change the number of terms as needed
             console.log('Execution result:', result);
             return result;
         } else {
@@ -73,6 +74,7 @@ async function executeCodeSnippet(codeSnippet) {
         throw error;
     }
 }
+
 
 
 // Example usage
