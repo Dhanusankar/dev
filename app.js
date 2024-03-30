@@ -66,7 +66,10 @@ async function executeCodeSnippet(codeSnippet) {
 
 // Define the route handler for the root path '/'
 app.get('/', (req, res) => {
-    res.send('Server is running.');
+    // Read the index.html file synchronously
+    const htmlContent = fs.readFileSync('index.html', 'utf8');
+    // Send the HTML content as the response
+    res.send(htmlContent);
 });
 
 app.use(express.static('public'));
