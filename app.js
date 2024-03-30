@@ -1,22 +1,21 @@
+
 const simpleGit = require('simple-git');
 const fs = require('fs').promises;
 const path = require('path');
+
 async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
     const repoDir = './temp_repo'; // Temporary directory to clone the repository
     const git = simpleGit();
 
     try {
         await git.clone(repositoryUrl, repoDir, ['--branch', branch]);
-        console.log('Repository cloned successfully.');
-
         const snippetPath = await searchForSnippet(repoDir, searchTerm);
         if (snippetPath) {
-            console.log('Code snippet found:', snippetPath);
             const codeSnippet = await fs.readFile(snippetPath, 'utf8');
             console.log('Code snippet to be executed:', codeSnippet);
-            return codeSnippet; // Return the code snippet for now
+            const result = await executeCodeSnippet(codeSnippet);
+            return result;
         } else {
-            console.log('Code snippet not found in the repository.');
             throw new Error('Code snippet not found in the repository.');
         }
     } catch (error) {
@@ -26,13 +25,11 @@ async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
         // Cleanup: Delete temporary directory after fetching code snippet
         try {
             await fs.rm(repoDir, { recursive: true, force: true });
-            console.log('Temporary directory deleted.');
         } catch (cleanupError) {
             console.error('Error cleaning up:', cleanupError);
         }
     }
 }
-
 
 async function searchForSnippet(directory, searchTerm) {
     const files = await fs.readdir(directory);
@@ -55,27 +52,13 @@ async function searchForSnippet(directory, searchTerm) {
 
 async function executeCodeSnippet(codeSnippet) {
     try {
-        console.log('Executing code snippet:', codeSnippet);
-        
-        // Evaluate the code snippet
-        const evaluatedSnippet = eval(codeSnippet);
-        
-        // Check if the evaluated snippet is a function
-        if (typeof evaluatedSnippet === 'function') {
-            // Call the function with the desired number of terms (e.g., 10)
-            const result = evaluatedSnippet(10); // Change the number of terms as needed
-            console.log('Execution result:', result);
-            return result;
-        } else {
-            throw new Error('Code snippet does not define a function');
-        }
+        const result = eval(codeSnippet);
+        return result;
     } catch (error) {
         console.error('Error executing code snippet:', error);
         throw error;
     }
 }
-
-
 
 // Example usage
 const repositoryUrl = 'https://github.com/Dhanusankar/dev.git';
@@ -89,3 +72,4 @@ searchAndExecuteCodeSnippet(repositoryUrl, branch, userInput)
     .catch(error => {
         console.error('Error:', error);
     });
+
