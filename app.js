@@ -1,6 +1,9 @@
+const express = require('express');
 const simpleGit = require('simple-git');
 const fs = require('fs').promises;
 const path = require('path');
+
+const app = express();
 
 async function searchAndExecuteCodeSnippet(searchTerm) {
     const repositoryUrl = 'https://github.com/Dhanusankar/dev.git';
@@ -61,4 +64,18 @@ async function executeCodeSnippet(codeSnippet) {
     }
 }
 
-module.exports = searchAndExecuteCodeSnippet;
+app.use(express.static('public'));
+
+app.post('/execute', async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    try {
+        const result = await searchAndExecuteCodeSnippet(searchTerm);
+        res.send('Execution result: ' + result);
+    } catch (error) {
+        res.status(500).send('Error: ' + error.message);
+    }
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
