@@ -6,19 +6,15 @@ async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
     const git = simpleGit();
 
     try {
-        console.log('Cloning repository...');
         await git.clone(repositoryUrl, repoDir, ['--branch', branch]);
         console.log('Repository cloned successfully.');
 
-        console.log('Searching for code snippet...');
         const snippetPath = await searchForSnippet(repoDir, searchTerm);
         if (snippetPath) {
             console.log('Code snippet found:', snippetPath);
             const codeSnippet = await fs.readFile(snippetPath, 'utf8');
             console.log('Code snippet to be executed:', codeSnippet);
-            const result = await executeCodeSnippet(codeSnippet);
-            console.log('Execution result:', result);
-            return result;
+            return codeSnippet; // Return the code snippet for now
         } else {
             console.log('Code snippet not found in the repository.');
             throw new Error('Code snippet not found in the repository.');
@@ -36,6 +32,7 @@ async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
         }
     }
 }
+
 
 async function searchForSnippet(directory, searchTerm) {
     const files = await fs.readdir(directory);
