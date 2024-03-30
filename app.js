@@ -52,25 +52,28 @@ async function searchForSnippet(directory, searchTerm) {
 
     return null;
 }
-
 async function executeCodeSnippet(codeSnippet) {
     try {
         console.log('Executing code snippet:', codeSnippet);
-        const snippetFunction = new Function(codeSnippet);
-        const result = snippetFunction();
-        console.log('Execution result:', result);
         
-        // Ensure result is not undefined
-        if (result !== undefined) {
+        // Evaluate the code snippet
+        const evaluatedSnippet = eval(`(${codeSnippet})`);
+        
+        // Check if the evaluated snippet is a function
+        if (typeof evaluatedSnippet === 'function') {
+            // Call the function with the desired number of terms (e.g., 10)
+            const result = evaluatedSnippet(10);
+            console.log('Execution result:', result);
             return result;
         } else {
-            throw new Error('Execution result is undefined');
+            throw new Error('Code snippet does not define a function');
         }
     } catch (error) {
         console.error('Error executing code snippet:', error);
         throw error;
     }
 }
+
 
 // Example usage
 const repositoryUrl = 'https://github.com/Dhanusankar/dev.git';
