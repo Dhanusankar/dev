@@ -1,8 +1,7 @@
-const simpleGit = require('simple-git');
-const fs = require('fs');
+const simpleGit = require('simple-git/promise');
+const fs = require('fs').promises;
 const path = require('path');
 
-// Function to recursively search for a code snippet in the repository
 async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
     const repoDir = './temp_repo'; // Temporary directory to clone the repository
     const git = simpleGit();
@@ -11,11 +10,9 @@ async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
         await git.clone(repositoryUrl, repoDir, ['--branch', branch]);
         const snippetPath = await searchForSnippet(repoDir, searchTerm);
         if (snippetPath) {
-            const codeSnippet = fs.readFileSync(snippetPath, 'utf8');
-            // Print the code snippet to the user
+            const codeSnippet = await fs.readFile(snippetPath, 'utf8');
             console.log('Code snippet to be executed:', codeSnippet);
-            // Execute the code snippet
-            const result = executeCodeSnippet(codeSnippet);
+            const result = await executeCodeSnippet(codeSnippet);
             return result;
         } else {
             throw new Error('Code snippet not found in the repository.');
@@ -25,17 +22,20 @@ async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
         throw error;
     } finally {
         // Cleanup: Delete temporary directory after fetching code snippet
-        fs.rmdirSync(repoDir, { recursive: true });
+        try {
+            await fs.rm(repoDir, { recursive: true, force: true });
+        } catch (cleanupError) {
+            console.error('Error cleaning up:', cleanupError);
+        }
     }
 }
 
-// Recursive function to search for code snippet in a directory
 async function searchForSnippet(directory, searchTerm) {
-    const files = fs.readdirSync(directory);
+    const files = await fs.readdir(directory);
 
     for (const file of files) {
         const filePath = path.join(directory, file);
-        const stat = fs.statSync(filePath);
+        const stat = await fs.stat(filePath);
         if (stat.isDirectory()) {
             const result = await searchForSnippet(filePath, searchTerm);
             if (result) {
@@ -49,10 +49,8 @@ async function searchForSnippet(directory, searchTerm) {
     return null;
 }
 
-// Function to execute code snippet
-function executeCodeSnippet(codeSnippet) {
+async function executeCodeSnippet(codeSnippet) {
     try {
-        // Execute the code snippet
         const result = eval(codeSnippet);
         return result;
     } catch (error) {
@@ -68,7 +66,7 @@ const userInput = 'fibonacci'; // User provides the search term to find the snip
 
 searchAndExecuteCodeSnippet(repositoryUrl, branch, userInput)
     .then(result => {
-        console.log('Execution result2:', result);
+        console.log('Execution result:', result);
     })
     .catch(error => {
         console.error('Error:', error);
