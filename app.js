@@ -1,9 +1,10 @@
-
 const simpleGit = require('simple-git');
 const fs = require('fs').promises;
 const path = require('path');
 
-async function searchAndExecuteCodeSnippet(repositoryUrl, branch, searchTerm) {
+async function searchAndExecuteCodeSnippet(searchTerm) {
+    const repositoryUrl = 'https://github.com/Dhanusankar/dev.git';
+    const branch = 'main';
     const repoDir = './temp_repo'; // Temporary directory to clone the repository
     const git = simpleGit();
 
@@ -60,16 +61,4 @@ async function executeCodeSnippet(codeSnippet) {
     }
 }
 
-// Example usage
-const repositoryUrl = 'https://github.com/Dhanusankar/dev.git';
-const branch = 'main';
-const userInput = 'fibonacci'; // User provides the search term to find the snippet
-
-searchAndExecuteCodeSnippet(repositoryUrl, branch, userInput)
-    .then(result => {
-      //  console.log('Execution result:', result);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
+module.exports = searchAndExecuteCodeSnippet;
