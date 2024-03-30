@@ -51,8 +51,8 @@ async function searchForSnippet(directory, searchTerm) {
 
 async function executeCodeSnippet(codeSnippet) {
     try {
-        const result = eval(codeSnippet);
-        return result;
+        const result1 = eval(codeSnippet);
+        return result1;
     } catch (error) {
         console.error('Error executing code snippet:', error);
         throw error;
