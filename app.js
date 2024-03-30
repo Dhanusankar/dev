@@ -55,10 +55,12 @@ async function searchForSnippet(directory, searchTerm) {
 
     return null;
 }
+
 async function executeCodeSnippet(codeSnippet) {
     try {
         console.log('Executing code snippet:', codeSnippet);
-        const result = eval(codeSnippet);
+        const snippetFunction = new Function(codeSnippet);
+        const result = snippetFunction();
         console.log('Execution result:', result);
         
         // Ensure result is not undefined
