@@ -68,7 +68,7 @@ async function executeCodeSnippet(codeSnippet) {
 app.get('/', async (req, res) => {
     try {
         // Read the index.html file asynchronously
-        const htmlContent = await fs.readFile('index.html', 'utf8');
+        const htmlContent = await fs.readFile('public/index.html', 'utf8');
         // Send the HTML content as the response
         res.send(htmlContent);
     } catch (error) {
