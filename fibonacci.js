@@ -1,4 +1,3 @@
-// JavaScript source code
 function fibonacciSeries(numTerms) {
     let fibonacci = [0, 1]; // Initialize the series with first two terms
     
@@ -13,6 +12,7 @@ function fibonacciSeries(numTerms) {
 // Example usage:
 const numTerms = 10; // Change this to generate Fibonacci series with different number of terms
 const series = fibonacciSeries(numTerms);
+console.log("Generated Fibonacci Series:", series);
 
 // Print each term individually
 let result = "Fibonacci Series up to " + numTerms + " terms: ";
@@ -23,4 +23,4 @@ for (let i = 0; i < series.length; i++) {
     }
 }
 // Display result
-return result;
+console.log("Final Result:", result);
