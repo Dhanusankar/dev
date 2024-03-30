@@ -64,6 +64,11 @@ async function executeCodeSnippet(codeSnippet) {
     }
 }
 
+// Define the route handler for the root path '/'
+app.get('/', (req, res) => {
+    res.send('Server is running.');
+});
+
 app.use(express.static('public'));
 
 app.post('/execute', async (req, res) => {
