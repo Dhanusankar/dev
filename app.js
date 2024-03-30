@@ -57,7 +57,7 @@ async function executeCodeSnippet(codeSnippet) {
         console.log('Executing code snippet:', codeSnippet);
         
         // Evaluate the code snippet
-        const evaluatedSnippet = eval(`(${codeSnippet})`);
+        const evaluatedSnippet = eval(codeSnippet);
         
         // Check if the evaluated snippet is a function
         if (typeof evaluatedSnippet === 'function') {
