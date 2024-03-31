@@ -14,6 +14,7 @@ async function searchAndExecuteCodeSnippet(searchTerm) {
     try {
         await git.clone(repositoryUrl, repoDir, ['--branch', branch]);
         const snippetPath = await searchForSnippet(repoDir, searchTerm);
+        console.log(snippetpath);
         if (snippetPath) {
             const codeSnippet = await fs.readFile(snippetPath, 'utf8');
             console.log('Code snippet to be executed:', codeSnippet);
