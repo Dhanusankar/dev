@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
+    "fs-extra": "^11.2.0",
     "simple-git": "^3.24.0"
   },
   "keywords": []
