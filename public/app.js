@@ -1,7 +1,7 @@
-const simpleGit = require('simple-git');
-const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
+import simpleGit from 'simple-git';
+import express from 'express';
+import fs.promises from 'fs';
+import path from 'path';
 
 const app = express();
 
